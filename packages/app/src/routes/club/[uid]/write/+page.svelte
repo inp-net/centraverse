@@ -24,7 +24,7 @@
   <p>
     <label>
       Titre :
-      <input type="text" bind:value={title} />
+      <InputText  bind:value={title} />
     </label>
   </p>
   <p>

@@ -45,7 +45,7 @@ Here is what the classic "todo" exercise looks like in Svelte:
 >
   <label>
     <!-- Bind `value` to the value of the input -->
-    New item: <input type="text" bind:value />
+    New item: <InputText  bind:value />
     <button type="submit">➕</button>
   </label>
 </form>

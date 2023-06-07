@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Button from '$lib/components/buttons/Button.svelte';
+  import ButtonPrimary from '$lib/components/buttons/ButtonPrimary.svelte';
   import GhostButton from '$lib/components/buttons/GhostButton.svelte';
   import InputGroup from '$lib/components/groups/InputGroup.svelte';
   import { zeus } from '$lib/zeus';
@@ -69,10 +69,10 @@
   <fieldset>
     <legend>Informations personnelles</legend>
     <p>
-      <label>Surnom : <input type="text" bind:value={nickname} /></label>
+      <label>Surnom : <InputText  bind:value={nickname} /></label>
     </p>
     <p>
-      <label>Description : <input type="text" bind:value={description} /></label>
+      <label>Description : <InputText  bind:value={description} /></label>
     </p>
     <p>Réseaux sociaux :</p>
     <ul>
@@ -171,7 +171,7 @@
     </p>
     <p>
       <label>
-        Adresse : <input type="text" bind:value={address} />
+        Adresse : <InputText  bind:value={address} />
       </label>
     </p>
     <p>
@@ -180,7 +180,7 @@
       </label>
     </p>
     <p>
-      <Button type="submit" theme="primary" {loading}>Sauvegarder</Button>
+      <ButtonPrimary type="submit" {loading}>Sauvegarder</ButtonPrimary>
     </p>
   </fieldset>
 </form>

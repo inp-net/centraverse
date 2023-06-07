@@ -8,7 +8,10 @@
     "is-dark-color": "^1.2.0",
     "party-js": "^2.2.0",
     "svelte-tenor": "^0.2.0",
-    "ua-parser-js": "^1.0.32"
+    "sveltejs-tippy": "^3.0.0",
+    "ua-parser-js": "^1.0.32",
+    "xss": "^1.0.14",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
@@ -29,6 +32,7 @@
     "@types/cookie": "^0.5.1",
     "@types/js-cookie": "^3.0.2",
     "@types/ua-parser-js": "^0.7.36",
+    "@types/zxcvbn": "^4.4.1",
     "graphql-zeus": "^5.2.0",
     "sanitize.css": "^13.0.0",
     "sass": "^1.56.1",

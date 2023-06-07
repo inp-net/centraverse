@@ -1,8 +1,9 @@
 <script lang="ts">
   import { Meta, Story, Template } from '@storybook/addon-svelte-csf';
   import Alert from '../alerts/Alert.svelte';
-  import Button from '../buttons/Button.svelte';
+  import ButtonPrimary from '../buttons/ButtonPrimary.svelte';
   import FormCard from './FormCard.svelte';
+  import InputPassword from '../inputs/InputPassword.svelte';
 
   let loading = false;
   let error = false;
@@ -31,10 +32,10 @@
     <Alert theme="danger" closed={!error} inline>Incorrect credentials.</Alert>
     <p><label>Email address: <input type="email" /></label></p>
     <p>
-      <label>Password: <input type="password" /></label>
+      <label>Password: <InputPassword /></label>
     </p>
     <p class="text-center">
-      <Button type="submit" theme="primary" {loading}>Login</Button>
+      <ButtonPrimary type="submit" {loading}>Login</ButtonPrimary>
     </p>
     <svelte:fragment slot="footer">
       <a href={'#'}>Password forgotten</a> •

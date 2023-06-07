@@ -11,7 +11,7 @@ export const pageQuery = Selector('QueryHomepageConnection')({
       bodyHtml: true,
       homepage: true,
       publishedAt: true,
-      group: { uid: true, name: true },
+      group: { uid: true, name: true, members: { memberId: true, title: true } },
       author: { uid: true, firstName: true, lastName: true },
     },
   },

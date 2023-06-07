@@ -1648,6 +1648,7 @@ __metadata:
     "@types/cookie": "npm:^0.5.1"
     "@types/js-cookie": "npm:^3.0.2"
     "@types/ua-parser-js": "npm:^0.7.36"
+    "@types/zxcvbn": "npm:^4.4.1"
     arborist: "workspace:^"
     cookie: "npm:^0.5.0"
     extract-files: "npm:^13.0.0"
@@ -1662,13 +1663,16 @@ __metadata:
     svelte-loader: "npm:^3.1.4"
     svelte-preprocess: "npm:^4.10.7"
     svelte-tenor: "npm:^0.2.0"
+    sveltejs-tippy: "npm:^3.0.0"
     tslib: "npm:^2.4.1"
     typescript: "npm:^4.9.3"
     ua-parser-js: "npm:^1.0.32"
     unplugin-icons: "npm:^0.14.13"
     vite: "npm:^3.2.4"
     vite-plugin-windicss: "npm:^1.8.8"
+    xss: "npm:^1.0.14"
     zod: "npm:^3.19.1"
+    zxcvbn: "npm:^4.4.2"
   languageName: unknown
   linkType: soft
 
@@ -2623,6 +2627,13 @@ __metadata:
   version: 1.0.0-next.21
   resolution: "@polka/url@npm:1.0.0-next.21"
   checksum: 1329b8590b529d068d76c89c7f2bd08c3fbde82f7ed2ed6dede29b6711f8a42f4206b0bd769e472177708f7388b6213501e48272a2602605a7577a52ef919034
+  languageName: node
+  linkType: hard
+
+"@popperjs/core@npm:^2.1.0":
+  version: 2.11.8
+  resolution: "@popperjs/core@npm:2.11.8"
+  checksum: 5c180df0c3fab5f4ebb81c79898186c0df3e13d72e27fe49d2a80873a27d8e12a16866d70da648d3d34caebce638fdb1a0730d1c1c5a8a40451db0160b92b375
   languageName: node
   linkType: hard
 
@@ -4642,6 +4653,13 @@ __metadata:
   dependencies:
     "@types/yargs-parser": "npm:*"
   checksum: ec6ebd4a69c802aaddba20bf20b3b5f6b51ef7f6e15e43fceeff774e790a1b5a6f731b89810496150c984ed439b1355f041f7542623620cd82d5a0f7d818c600
+  languageName: node
+  linkType: hard
+
+"@types/zxcvbn@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "@types/zxcvbn@npm:4.4.1"
+  checksum: a90a20240fd31908793e70380c9cec9a6080e159c4b2f59dcaa715afa80ac4c3d64f57fde6f03f3f8a57a65032b629256ea005f0aa0467df0f3589ff3e97693d
   languageName: node
   linkType: hard
 
@@ -7030,7 +7048,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^2.19.0, commander@npm:^2.20.0":
+"commander@npm:^2.19.0, commander@npm:^2.20.0, commander@npm:^2.20.3":
   version: 2.20.3
   resolution: "commander@npm:2.20.3"
   checksum: a6cb7ce73cc1db74a2da4bb6b4fc4f9a655ba35beb90f32bf5831d7d3be610dafc01dcc8a17f8204cf4e3f1f434d2115b7db56dfb0b827d42b10d1ba6ae8cbb4
@@ -7514,6 +7532,13 @@ __metadata:
   bin:
     cssesc: bin/cssesc
   checksum: 5e8fcfb6a0fa7f9c05fd6d5a6a6580586310c7dd85c3938e1f199736fd392a9317998e639fde58f63ea786ff1bae5078d6342321c1deddab595fc5bf1764e66e
+  languageName: node
+  linkType: hard
+
+"cssfilter@npm:0.0.10":
+  version: 0.0.10
+  resolution: "cssfilter@npm:0.0.10"
+  checksum: 7eea13c36ce88f0149bbdbc6703d1b3164db7eae4fcaecb2f42d1b87d97f22b3145f2cfdde5d693f2b25f675c6c9690aef60e5296e00c5a417c702f9a4e81960
   languageName: node
   linkType: hard
 
@@ -16763,6 +16788,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sveltejs-tippy@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "sveltejs-tippy@npm:3.0.0"
+  dependencies:
+    tippy.js: "npm:~6.0.1"
+  checksum: cdc04bdedb28aeed99bbf8ddf1df4ef5c21ca1569f665b1fd3232800d7eaa7d699f43704f98174b0ee4be1d76921b841873cf83061c2dfa450628b1f13f4fcde
+  languageName: node
+  linkType: hard
+
 "svg-tags@npm:^1.0.0":
   version: 1.0.0
   resolution: "svg-tags@npm:1.0.0"
@@ -17012,6 +17046,15 @@ __metadata:
     globalyzer: "npm:0.1.0"
     globrex: "npm:^0.1.2"
   checksum: 41f9a38124164bda6a2149f951e046c555a508ce22cbad2d08b7d4066622faa6933feae503c647815342b9e461ffc93cf7e41b28e835030480b081e000b1caf7
+  languageName: node
+  linkType: hard
+
+"tippy.js@npm:~6.0.1":
+  version: 6.0.3
+  resolution: "tippy.js@npm:6.0.3"
+  dependencies:
+    "@popperjs/core": "npm:^2.1.0"
+  checksum: a15336b23859ab001e304f3cc63ec7df019ec28d7b00f8714e77a1ff5cb88b2fa7d986abb429cacb1eac4b0f440527de79cbca333d6dfbe6dc3cd1e47d675bec
   languageName: node
   linkType: hard
 
@@ -18515,6 +18558,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"xss@npm:^1.0.14":
+  version: 1.0.14
+  resolution: "xss@npm:1.0.14"
+  dependencies:
+    commander: "npm:^2.20.3"
+    cssfilter: "npm:0.0.10"
+  bin:
+    xss: bin/xss
+  checksum: 31bee0442d4e30ccbfda81ef0a3be016ff20b40b183ade2a91e7c09ca908873a1f3678c85c7abcc0f78de374d99859546bef15f34cdd5494e7df14f2a16d0449
+  languageName: node
+  linkType: hard
+
 "xtend@npm:^4.0.0, xtend@npm:^4.0.1, xtend@npm:~4.0.1":
   version: 4.0.2
   resolution: "xtend@npm:4.0.2"
@@ -18633,5 +18688,12 @@ __metadata:
   version: 1.0.5
   resolution: "zwitch@npm:1.0.5"
   checksum: 47a33f9d7e009662a71cc07a5e8fc742c6fae5aaa0a086b58ea21d933e43b305d36c90b5acc5e8efbc55afd51d44627a31e83360540ba6395b500e8987051181
+  languageName: node
+  linkType: hard
+
+"zxcvbn@npm:^4.4.2":
+  version: 4.4.2
+  resolution: "zxcvbn@npm:4.4.2"
+  checksum: c3a4e0f81a9f2c4f9730ed2a9788713499b7fdf0e4313d31790576e5f5387ea204344c317541f51a5414c8a5bad8ebc2e9ff1f35c1159b3156c19fad18ec440a
   languageName: node
   linkType: hard

@@ -140,12 +140,12 @@
   <h2>Ajouter un membre</h2>
   <p>
     <label>
-      Nom d'utilisateur : <input type="text" bind:value={uid} required />
+      Nom d'utilisateur : <InputText  bind:value={uid} required />
     </label>
   </p>
   <p>
     <label>
-      Titre : <input type="text" bind:value={title} />
+      Titre : <InputText  bind:value={title} />
     </label>
   </p>
   <p><button type="submit">Ajouter</button></p>

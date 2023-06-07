@@ -1,13 +1,14 @@
 <script lang="ts">
   import GhostButton from '$lib/components/buttons/GhostButton.svelte';
   import InputGroup from '$lib/components/groups/InputGroup.svelte';
+  import InputText from "$lib/components/inputs/InputText.svelte";
   import MajesticonsClose from '~icons/majesticons/close';
   import MajesticonsChevronUp from '~icons/majesticons/chevron-up';
   import MajesticonsPlus from '~icons/majesticons/plus';
   import { zeus } from '$lib/zeus';
   import type { PageData } from './$types';
   import { clubQuery } from './+page';
-  import Button from '$lib/components/buttons/Button.svelte';
+  import ButtonPrimary from '$lib/components/buttons/ButtonPrimary.svelte';
   import { onMount } from 'svelte';
   import Alert from '$lib/components/alerts/Alert.svelte';
   import ParentSearch from '../../../clubs/create/ParentSearch.svelte';
@@ -97,11 +98,11 @@
         </select></label
       >
     </p>
-    <p><label>Nom : <input type="text" bind:value={name} /></label></p>
+    <p><label>Nom : <InputText  bind:value={name} /></label></p>
     <p>
       <label
         >Description courte :
-        <input type="text" bind:value={description} />
+        <InputText  bind:value={description} />
       </label>
     </p>
     <p>
@@ -116,7 +117,7 @@
       <label>Couleur : <input type="color" bind:value={color} /></label>
     </p>
     <p>
-      <label>Adresse : <input type="text" bind:value={address} /></label>
+      <label>Adresse : <InputText  bind:value={address} /></label>
     </p>
     <!-- <p>
         <label>Email : <input type="email" bind:value={email} /></label>
@@ -181,7 +182,7 @@
       >
     {/if}
     <p>
-      <Button type="submit" theme="primary" {loading}>Sauvegarder</Button>
+      <ButtonPrimary type="submit"  {loading}>Sauvegarder</ButtonPrimary>
     </p>
   </fieldset>
 </form>

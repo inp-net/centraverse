@@ -2,6 +2,7 @@
   import { goto } from '$app/navigation';
   import Alert from '$lib/components/alerts/Alert.svelte';
   import Button from '$lib/components/buttons/Button.svelte';
+  import ButtonPrimary from '$lib/components/buttons/ButtonPrimary.svelte';
   import FormCard from '$lib/components/cards/FormCard.svelte';
   import FormInput from '$lib/components/inputs/FormInput.svelte';
   import { fieldErrorsToFormattedError } from '$lib/errors.js';
@@ -106,10 +107,10 @@
   <p>Demande envoyée par <strong>{data.userCandidateByEmail.email}</strong>.</p>
   <p class="grid gap-4 desktop:grid-cols-2">
     <FormInput label="Prénom :" errors={formErrors?.firstName?._errors}>
-      <input type="text" bind:value={firstName} required />
+      <InputText  bind:value={firstName} required />
     </FormInput>
     <FormInput label="Nom de famille :" errors={formErrors?.lastName?._errors}>
-      <input type="text" bind:value={lastName} required />
+      <InputText  bind:value={lastName} required />
     </FormInput>
   </p>
   <p class="grid gap-4 desktop:grid-cols-2">
@@ -145,13 +146,13 @@
   </p>
   <p>
     <FormInput label="Adresse :" errors={formErrors?.address?._errors}>
-      <input type="text" bind:value={address} />
+      <InputText  bind:value={address} />
     </FormInput>
   </p>
   <p class="text-center">
-    <Button type="submit" theme="primary" disabled={loading} loading={loadingSave} data-save>
+    <ButtonPrimary type="submit" disabled={loading} loading={loadingSave} data-save>
       Sauvegarder
-    </Button>
+    </ButtonPrimary>
     <Button
       type="submit"
       theme="success"

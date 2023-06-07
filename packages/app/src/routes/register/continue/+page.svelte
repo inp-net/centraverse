@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import Alert from '$lib/components/alerts/Alert.svelte';
-  import Button from '$lib/components/buttons/Button.svelte';
+    import ButtonPrimary from '$lib/components/buttons/ButtonPrimary.svelte';
   import FormCard from '$lib/components/cards/FormCard.svelte';
   import FormInput from '$lib/components/inputs/FormInput.svelte';
   import { fieldErrorsToFormattedError } from '$lib/errors.js';
@@ -9,6 +9,8 @@
   import { zeus } from '$lib/zeus.js';
   import type { ZodFormattedError } from 'zod';
   import type { PageData } from './$types';
+    import InputText from '$lib/components/inputs/InputText.svelte';
+    import InputPassword from '$lib/components/inputs/InputPassword.svelte';
 
   export let data: PageData;
 
@@ -127,10 +129,10 @@
     </Alert>
     <p class="grid gap-4 desktop:grid-cols-2">
       <FormInput label="Prénom :" errors={formErrors?.firstName?._errors}>
-        <input type="text" bind:value={firstName} required />
+        <InputText  bind:value={firstName} required />
       </FormInput>
       <FormInput label="Nom de famille :" errors={formErrors?.lastName?._errors}>
-        <input type="text" bind:value={lastName} required />
+        <InputText  bind:value={lastName} required />
       </FormInput>
     </p>
     <p class="grid gap-4 desktop:grid-cols-2">
@@ -160,7 +162,8 @@
         hint="Au moins 8 caractères, mais 12 c'est mieux"
         errors={formErrors?.password?._errors}
       >
-        <input type="password" minlength="8" required bind:value={password} />
+        <!-- <input type="password" minlength="8" required bind:value={password} /> -->
+        <InputPassword label="Mot de passe" bind:value={password} />
       </FormInput>
       <FormInput
         label="Confirmer le mot de passe :"
@@ -204,11 +207,11 @@
     </p>
     <p>
       <FormInput label="Adresse :" errors={formErrors?.address?._errors}>
-        <input type="text" bind:value={address} />
+        <InputText  bind:value={address} />
       </FormInput>
     </p>
     <p class="text-center">
-      <Button type="submit" theme="primary" {loading}>S'inscrire</Button>
+      <ButtonPrimary type="submit"  {loading}>S'inscrire</ButtonPrimary>
     </p>
   </FormCard>
 {:else}

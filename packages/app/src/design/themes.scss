@@ -10,6 +10,18 @@
   --loading-bg: linear-gradient(to right, #{$pink-800}, #{$pink-600});
 }
 
+:root.sambae {
+  --bg: #037380;
+  --text: #9bfaa4;
+  --link: #50acbd;
+  --title: #9bfaa4;
+  --shadow: 0 0.25rem 0.5rem #{$black};
+  --primary-bg: #50acbd;
+  --primary-text: $white;
+  --primary-shadow: 0 0.25rem 0.5rem #{$black};
+  --loading-bg: linear-gradient(to right, #{$pink-800}, #{$pink-600});
+}
+
 :root.pride {
   --primary-bg: linear-gradient(
     to right,

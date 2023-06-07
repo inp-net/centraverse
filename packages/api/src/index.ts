@@ -88,7 +88,7 @@ const yoga = createYoga({
 const api = express();
 api.use(
   // Allow queries from the frontend only
-  cors({ origin: [process.env.FRONTEND_ORIGIN, 'http://app'] }),
+  cors({ origin: [process.env.FRONTEND_ORIGIN, 'http://192.168.*', 'http://app'] }),
   // Set basic security headers
   helmet({
     contentSecurityPolicy: false,

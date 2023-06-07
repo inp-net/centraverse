@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import Alert from '$lib/components/alerts/Alert.svelte';
-  import Button from '$lib/components/buttons/Button.svelte';
+    import ButtonPrimary from '$lib/components/buttons/ButtonPrimary.svelte';
   import FormCard from '$lib/components/cards/FormCard.svelte';
   import FormInput from '$lib/components/inputs/FormInput.svelte';
   import { fieldErrorsToFormattedError } from '$lib/errors.js';
@@ -68,7 +68,7 @@
         </FormInput>
       </p>
       <p class="text-center">
-        <Button type="submit" theme="primary" {loading}>S'inscrire</Button>
+        <ButtonPrimary type="submit"  {loading}>S'inscrire</ButtonPrimary>
       </p>
     </FormCard>
   {:else if result}

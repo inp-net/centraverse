@@ -1,6 +1,6 @@
 <script lang="ts">
   import { invalidateAll } from '$app/navigation';
-  import Button from '$lib/components/buttons/Button.svelte';
+    import ButtonPrimary from '$lib/components/buttons/ButtonPrimary.svelte';
   import { zeus } from '$lib/zeus';
   import type { PageData } from './$types';
 
@@ -43,7 +43,7 @@
       <label><input type="checkbox" bind:checked={canEditUsers} /> Édition des utilisateurs</label>
     </p>
     <p>
-      <Button type="submit" theme="primary" {loading}>Sauvegarder</Button>
+      <ButtonPrimary type="submit"  {loading}>Sauvegarder</ButtonPrimary>
     </p>
   </fieldset>
 </form>

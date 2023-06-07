@@ -2,8 +2,9 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import Alert from '$lib/components/alerts/Alert.svelte';
-  import Button from '$lib/components/buttons/Button.svelte';
+    import ButtonPrimary from '$lib/components/buttons/ButtonPrimary.svelte';
   import FormCard from '$lib/components/cards/FormCard.svelte';
+    import InputText from '$lib/components/inputs/InputText.svelte';
   import { me, saveSessionToken, sessionUserQuery } from '$lib/session';
   import { zeus } from '$lib/zeus';
   import { onMount } from 'svelte';
@@ -65,12 +66,12 @@
     <Alert theme="danger" closed={errorMessages === undefined} inline>
       {errorMessages?.join(' ')}
     </Alert>
-    <p><label>Adresse e-mail&nbsp;: <input type="text" bind:value={email} /></label></p>
+    <p><label>Adresse e-mail&nbsp;: <InputText  bind:value={email} /></label></p>
     <p>
       <label>Mot de passe&nbsp;: <input type="password" bind:value={password} /></label>
     </p>
     <p class="text-center">
-      <Button type="submit" theme="primary" {loading}>Se connecter</Button>
+      <ButtonPrimary type="submit"  {loading}>Se connecter</ButtonPrimary>
     </p>
     <svelte:fragment slot="footer">
       <a href="./forgotten/{linkParams}">Mot de passe oublié</a>

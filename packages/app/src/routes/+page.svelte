@@ -26,11 +26,15 @@
   };
 </script>
 
-<h1>Bienvenue sur Centraverse</h1>
+<h1>Mon feed</h1>
 
 {#each data.homepage.edges as { cursor, node: { slug, title, bodyHtml, publishedAt, group, author, homepage } }}
   <ArticleCard
     {title}
+    {author}
+    {publishedAt}
+    {group}
+    authorRole={group.members.find(({memberId}) => memberId === author?.uid)?.title ?? ''}
     href="/club/{group.uid}/post/{slug}/"
     img={publishedAt.getTime() % 2
       ? { src: `https://picsum.photos/seed/${cursor}/960/400`, alt: '', width: 960, height: 400 }

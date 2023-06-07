@@ -62,20 +62,6 @@ a {
   }
 }
 
-button,
-input,
-select,
-textarea {
-  padding: 0.25em 0.5em;
-  font: inherit;
-  color: var(--text);
-  background: var(--bg);
-  border: var(--border-inline) solid var(--border);
-  border-radius: var(--radius-inline);
-  outline: 0 solid var(--ring);
-  transition: all 80ms ease-in, width 0s, height 0s;
-}
-
 input[type='color'] {
   height: 2em;
 }

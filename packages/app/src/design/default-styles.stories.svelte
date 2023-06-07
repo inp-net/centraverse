@@ -28,11 +28,11 @@
 
 <Story name="Forms">
   <p>
-    <label>Text: <input type="text" value="value" /></label>
+    <label>Text: <InputText  value="value" /></label>
     <button type="button">Button</button>
   </p>
   <p>
-    <label>Disabled: <input type="text" value="value" disabled /></label>
+    <label>Disabled: <InputText  value="value" disabled /></label>
     <button type="button" disabled>Button</button>
   </p>
   <p>

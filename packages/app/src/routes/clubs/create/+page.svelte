@@ -1,8 +1,9 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import Alert from '$lib/components/alerts/Alert.svelte';
-  import Button from '$lib/components/buttons/Button.svelte';
+  import ButtonPrimary from '$lib/components/buttons/ButtonPrimary.svelte';
   import FormInput from '$lib/components/inputs/FormInput.svelte';
+    import InputText from '$lib/components/inputs/InputText.svelte';
   import { GraphQLError, GroupType, zeus, ZeusError } from '$lib/zeus';
   import type { PageData } from './$types';
   import ParentSearch from './ParentSearch.svelte';
@@ -41,7 +42,7 @@
 
 <form on:submit|preventDefault={createGroup}>
   <FormInput label="Nom du groupe :">
-    <input type="text" bind:value={name} required />
+    <InputText  bind:value={name} required />
   </FormInput>
 
   <p>
@@ -63,7 +64,7 @@
       Autoriser l'auto-inscription
     </label>
   </p>
-  <Button type="submit" theme="primary" {loading}>Créer le groupe</Button>
+  <ButtonPrimary type="submit"  {loading}>Créer le groupe</ButtonPrimary>
   {#if serverError}
     <Alert theme="danger">{serverError}</Alert>
   {/if}

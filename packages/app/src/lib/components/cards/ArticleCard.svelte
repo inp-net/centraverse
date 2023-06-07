@@ -3,6 +3,10 @@
 
   export let title: string;
   export let href: string;
+  export let group: { name: string; uid: string } | undefined;
+  export let author: { firstName: string; lastName: string; uid: string }|undefined;
+  export let publishedAt: Date;
+  export let authorRole: string;
   export let img: { src: string; alt: string; width: number; height: number } | undefined =
     undefined;
 </script>
