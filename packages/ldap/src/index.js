@@ -14,11 +14,13 @@ const prisma = new PrismaClient();
 
 // Code to handle LDAP requests
 
+// Log requests
 server.use(async (req, res, next) => {
   console.log('Request on', req.dn.toString() + ' with ' + req.scope + ' scope');
   return next();
 });
 
+// Bind
 server.bind(rootDn, async (req, res, next) => {
   try {
     // Anonymous bind
@@ -32,6 +34,7 @@ server.bind(rootDn, async (req, res, next) => {
   }
 });
 
+// RootDSE
 server.search('', async (req, res, next) => {
   console.log('rootDSE ' + req.scope);
   try {
@@ -68,6 +71,7 @@ server.search('', async (req, res, next) => {
   }
 });
 
+// Subschema
 server.search('cn=Subschema', async (req, res, next) => {
   console.log('cn=Subschema');
   try {
@@ -87,6 +91,7 @@ server.search('cn=Subschema', async (req, res, next) => {
   }
 });
 
+// Search users
 server.search(`ou=people,${rootDn}`, async (req, res, next) => {
   console.log(`ou=people,${rootDn} ` + req.scope);
   const dc = req.dn.rdns[0].attrs.cn ? req.dn.rdns[0].attrs.cn.value : 'cn';
@@ -212,10 +217,43 @@ server.search(`ou=people,${rootDn}`, async (req, res, next) => {
   }
 });
 
+// Search schools
 server.search(`ou=ecoles,ou=groups,${rootDn}`, async (req, res, next) => {
-  console.log(`ou=ecoles,ou=clubs,${rootDn} ` + req.scope);
+  console.log(`ou=ecoles,ou=groups,${rootDn} ` + req.scope);
+  const dc = req.dn.rdns[0].attrs.cn ? req.dn.rdns[0].attrs.cn.value : 'cn';
   try {
-    if (req.filter instanceof ldap.PresenceFilter && req.scope === 'base') {
+    // Search for one school
+    if (dc !== 'cn' && req.filter instanceof ldap.PresenceFilter && req.scope === 'base') {
+      const ecole = await prisma.school.findFirst({
+        where: {
+          name: dc,
+        },
+        include: {
+          majors: {
+            include: {
+              students: true,
+            },
+          },
+        },
+      });
+      if (ecole) {
+        res.send({
+          dn: `cn=${ecole.name},ou=ecoles,ou=groups,${rootDn}`,
+          attributes: {
+            cn: ecole.name,
+            displayName: ecole.name,
+            objectclass: ['top', 'groupOfNames', 'Ecole'],
+            memberUid: ecole.majors
+              .map((major) => major.students.map((student) => student.uid))
+              .flat(),
+          },
+        });
+      }
+      res.end();
+    } else if (dc !== 'cn' && req.filter instanceof ldap.PresenceFilter && req.scope === 'one') {
+      // End of the tree
+      res.end();
+    } else if (req.filter instanceof ldap.PresenceFilter && req.scope === 'base') {
       res.send({
         dn: `ou=ecoles,ou=groups,${rootDn}`,
         attributes: {
@@ -225,27 +263,14 @@ server.search(`ou=ecoles,ou=groups,${rootDn}`, async (req, res, next) => {
       });
       res.end();
     } else {
-      const ecoles = await prisma.school.findMany({
-        include: {
-          majors: {
-            include: {
-              students: true,
-            },
-          },
-        },
-      });
+      const ecoles = await prisma.school.findMany();
       const ldapEcoles = ecoles.map((ecole) => {
         return {
           dn: `cn=${ecole.name},ou=ecoles,ou=groups,${rootDn}`,
           attributes: {
             cn: ecole.name,
             displayName: ecole.name,
-            objectclass: ['top', 'groupOfNames'],
-            member: ecole.majors.map((major) => {
-              major.students.map((student) => {
-                return `cn=${student.uid},ou=people,${rootDn}`;
-              });
-            }),
+            objectclass: ['top', 'groupOfNames', 'Ecole'],
           },
         };
       });
@@ -259,10 +284,38 @@ server.search(`ou=ecoles,ou=groups,${rootDn}`, async (req, res, next) => {
   }
 });
 
+// Search students associations
 server.search(`ou=aes,ou=groups,${rootDn}`, async (req, res, next) => {
   console.log(`ou=aes,ou=groups,${rootDn} ` + req.scope);
+  const dc = req.dn.rdns[0].attrs.cn ? req.dn.rdns[0].attrs.cn.value : 'cn';
   try {
-    if (req.filter instanceof ldap.PresenceFilter && req.scope === 'base') {
+    // Search for one students associations
+    if (dc !== 'cn' && req.filter instanceof ldap.PresenceFilter && req.scope === 'base') {
+      const ae = await prisma.group.findFirst({
+        where: {
+          type: 'StudentAssociationSection',
+          name: dc,
+        },
+        include: {
+          members: true,
+        },
+      });
+      if (ae) {
+        res.send({
+          dn: `cn=${ae.name},ou=aes,ou=groups,${rootDn}`,
+          attributes: {
+            cn: ae.name,
+            displayName: ae.name,
+            objectclass: ['top', 'groupOfNames', 'AE'],
+            memberUid: ae.members.map((member) => member.memberId),
+          },
+        });
+      }
+      res.end();
+    } else if (dc !== 'cn' && req.filter instanceof ldap.PresenceFilter && req.scope === 'one') {
+      // End of the tree
+      res.end();
+    } else if (req.filter instanceof ldap.PresenceFilter && req.scope === 'base') {
       res.send({
         dn: `ou=ae,ou=groups,${rootDn}`,
         attributes: {
@@ -276,9 +329,6 @@ server.search(`ou=aes,ou=groups,${rootDn}`, async (req, res, next) => {
         where: {
           type: 'StudentAssociationSection',
         },
-        include: {
-          members: true,
-        },
       });
       const ldapAes = aes.map((ae) => {
         return {
@@ -287,8 +337,7 @@ server.search(`ou=aes,ou=groups,${rootDn}`, async (req, res, next) => {
             cn: ae.name,
             displayName: ae.name,
             description: ae.description,
-            objectclass: ['top', 'groupOfNames'],
-            memberUid: ae.members.map((member) => member.memberId),
+            objectclass: ['top', 'groupOfNames', 'AE'],
           },
         };
       });
@@ -302,12 +351,44 @@ server.search(`ou=aes,ou=groups,${rootDn}`, async (req, res, next) => {
   }
 });
 
+// Search clubs
 server.search(`ou=clubs,ou=groups,${rootDn}`, async (req, res, next) => {
-  console.log(`ou=groups,ou=clubs,${rootDn} ` + req.scope);
+  console.log(`ou=clubs,ou=groups,${rootDn} ` + req.scope);
+  const dc = req.dn.rdns[0].attrs.cn ? req.dn.rdns[0].attrs.cn.value : 'cn';
   try {
-    if (req.filter instanceof ldap.PresenceFilter && req.scope === 'base') {
+    // Search for one students associations
+    if (dc !== 'cn' && req.filter instanceof ldap.PresenceFilter && req.scope === 'base') {
+      const club = await prisma.group.findFirst({
+        where: {
+          type: 'Club' || 'Association',
+          name: dc,
+        },
+        include: {
+          members: {
+            include: {
+              member: true,
+            },
+          },
+        },
+      });
+      if (club) {
+        res.send({
+          dn: `cn=${club.name},ou=clubs,ou=groups,${rootDn}`,
+          attributes: {
+            cn: club.name,
+            displayName: club.name,
+            objectclass: ['top', 'groupOfNames', 'Club'],
+            memberUid: club.members.map((member) => member.member.uid),
+          },
+        });
+      }
+      res.end();
+    } else if (dc !== 'cn' && req.filter instanceof ldap.PresenceFilter && req.scope === 'one') {
+      // End of the tree
+      res.end();
+    } else if (req.filter instanceof ldap.PresenceFilter && req.scope === 'base') {
       res.send({
-        dn: `ou=groups,ou=groups,${rootDn}`,
+        dn: `ou=clubs,ou=groups,${rootDn}`,
         attributes: {
           objectclass: ['top', 'organizationalUnit'],
           ou: 'clubs',
@@ -328,10 +409,7 @@ server.search(`ou=clubs,ou=groups,${rootDn}`, async (req, res, next) => {
           dn: `cn=${club.name},ou=clubs,ou=groups,${rootDn}`,
           attributes: {
             cn: club.name,
-            displayName: club.name,
-            description: club.description,
-            objectclass: ['top', 'groupOfNames'],
-            memberUid: club.members.map((member) => member.memberId),
+            objectclass: ['top', 'groupOfNames', 'Club'],
           },
         };
       });
@@ -345,10 +423,39 @@ server.search(`ou=clubs,ou=groups,${rootDn}`, async (req, res, next) => {
   }
 });
 
+// Search informal groups
 server.search(`ou=grp-informels,ou=groups,${rootDn}`, async (req, res, next) => {
-  console.log(`ou=grp-informels,ou=clubs,${rootDn} ` + req.scope);
+  console.log(`ou=grp-informels,ou=groups,${rootDn} ` + req.scope);
+  const dc = req.dn.rdns[0].attrs.cn ? req.dn.rdns[0].attrs.cn.value : 'cn';
   try {
-    if (req.filter instanceof ldap.PresenceFilter && req.scope === 'base') {
+    // Search for one students associations
+    if (dc !== 'cn' && req.filter instanceof ldap.PresenceFilter && req.scope === 'base') {
+      const grp_informel = await prisma.group.findFirst({
+        where: {
+          type: 'Group',
+          name: dc,
+        },
+        include: {
+          members: {
+            include: {
+              member: true,
+            },
+          },
+        },
+      });
+      if (grp_informel) {
+        res.send({
+          dn: `cn=${grp_informel.name},ou=grp-informels,ou=groups,${rootDn}`,
+          attributes: {
+            cn: grp_informel.name,
+            displayName: grp_informel.name,
+            objectclass: ['top', 'groupOfNames', 'Group Informel'],
+            memberUid: grp_informel.members.map((member) => member.member.uid),
+          },
+        });
+      }
+      res.end();
+    } else if (req.filter instanceof ldap.PresenceFilter && req.scope === 'base') {
       res.send({
         dn: `ou=grp-informels,ou=groups,${rootDn}`,
         attributes: {
@@ -373,7 +480,7 @@ server.search(`ou=grp-informels,ou=groups,${rootDn}`, async (req, res, next) => 
             cn: grp_informel.name,
             displayName: grp_informel.name,
             description: grp_informel.description,
-            objectclass: ['top', 'groupOfNames'],
+            objectclass: ['top', 'groupOfNames', 'Group Informel'],
             memberUid: grp_informel.members.map((member) => member.memberId),
           },
         };
@@ -388,6 +495,7 @@ server.search(`ou=grp-informels,ou=groups,${rootDn}`, async (req, res, next) => 
   }
 });
 
+// Search groups
 server.search(`ou=groups,${rootDn}`, async (req, res, next) => {
   console.log(`ou=groups,${rootDn} ` + req.scope);
   try {
@@ -395,7 +503,7 @@ server.search(`ou=groups,${rootDn}`, async (req, res, next) => {
       res.send({
         dn: `ou=groups,${rootDn}`,
         attributes: {
-          objectclass: ['top', 'organizationalUnit'],
+          objectclass: ['top', 'groupOfNames'],
           ou: 'groups',
         },
       });
@@ -419,7 +527,7 @@ server.search(`ou=groups,${rootDn}`, async (req, res, next) => {
         dn: `ou=aes,ou=groups,${rootDn}`,
         attributes: {
           objectclass: ['top', 'organizationalUnit'],
-          ou: 'ae',
+          ou: 'aes',
         },
       });
       res.send({
@@ -438,6 +546,7 @@ server.search(`ou=groups,${rootDn}`, async (req, res, next) => {
   }
 });
 
+// Search rootDn
 server.search(rootDn, async (req, res, next) => {
   console.log(rootDn + ' ' + req.scope);
   try {
@@ -482,6 +591,7 @@ server.search(rootDn, async (req, res, next) => {
   }
 });
 
+// Unbind
 server.unbind(async (req, res, next) => {
   // Handle unbind request
   // Clean up any resources if necessary
@@ -489,8 +599,7 @@ server.unbind(async (req, res, next) => {
   return next();
 });
 
-// Add more handlers as needed
-
+// Start server
 server.listen(ldapPort, () => {
   console.log('LDAP server listening on %s', server.url);
 });
