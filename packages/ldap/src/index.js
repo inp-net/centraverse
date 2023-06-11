@@ -14,6 +14,11 @@ const prisma = new PrismaClient();
 
 // Code to handle LDAP requests
 
+server.use(async (req, res, next) => {
+  console.log('Request on', req.dn.toString() + ' with ' + req.scope + ' scope');
+  return next();
+});
+
 server.bind(rootDn, async (req, res, next) => {
   try {
     // Anonymous bind
