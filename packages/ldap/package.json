@@ -1,0 +1,25 @@
+{
+  "name": "@centraverse/ldap",
+  "dependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "@prisma/client": "^4.15.0",
+    "ldapjs": "^2.3.3"
+  },
+  "devDependencies": {
+    "@tsconfig/node18-strictest-esm": "^1.0.1",
+    "@types/ldapjs": "^2.2.5",
+    "prisma": "^4.15.0",
+    "tsx": "^3.12.1"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "NODE_ENV=development tsx watch --clear-screen=false ./src/index.js"
+  },
+  "type": "module",
+  "prisma": {
+    "schema": "../api/prisma/schema.prisma"
+  },
+  "volta": {
+    "extends": "../../package.json"
+  }
+}
