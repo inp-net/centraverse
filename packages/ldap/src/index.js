@@ -355,13 +355,19 @@ server.search(`ou=aes,ou=groups,${rootDn}`, async (req, res, next) => {
 server.search(`ou=clubs,ou=groups,${rootDn}`, async (req, res, next) => {
   console.log(`ou=clubs,ou=groups,${rootDn} ` + req.scope);
   const dc = req.dn.rdns[0].attrs.cn ? req.dn.rdns[0].attrs.cn.value : 'cn';
+  // Split the dn to get the school name and the club name
+  const schoolName = dc.split('-')[1];
+  const clubName = dc.split('-')[0];
   try {
     // Search for one students associations
     if (dc !== 'cn' && req.filter instanceof ldap.PresenceFilter && req.scope === 'base') {
       const club = await prisma.group.findFirst({
         where: {
           type: 'Club' || 'Association',
-          name: dc,
+          name: clubName,
+          school: {
+            name: schoolName,
+          },
         },
         include: {
           members: {
@@ -369,13 +375,14 @@ server.search(`ou=clubs,ou=groups,${rootDn}`, async (req, res, next) => {
               member: true,
             },
           },
+          school: true,
         },
       });
       if (club) {
         res.send({
-          dn: `cn=${club.name},ou=clubs,ou=groups,${rootDn}`,
+          dn: `cn=${club.name}-${club.school.name},ou=clubs,ou=groups,${rootDn}`,
           attributes: {
-            cn: club.name,
+            cn: `${club.name}-${club.school.name}`,
             displayName: club.name,
             objectclass: ['top', 'groupOfNames', 'Club'],
             memberUid: club.members.map((member) => member.member.uid),
@@ -401,14 +408,14 @@ server.search(`ou=clubs,ou=groups,${rootDn}`, async (req, res, next) => {
           type: 'Club' || 'Association',
         },
         include: {
-          members: true,
+          school: true,
         },
       });
       const ldapClubs = clubs.map((club) => {
         return {
-          dn: `cn=${club.name},ou=clubs,ou=groups,${rootDn}`,
+          dn: `cn=${club.name}-${club.school.name},ou=clubs,ou=groups,${rootDn}`,
           attributes: {
-            cn: club.name,
+            cn: `${club.name}-${club.school.name}`,
             objectclass: ['top', 'groupOfNames', 'Club'],
           },
         };
@@ -469,9 +476,6 @@ server.search(`ou=grp-informels,ou=groups,${rootDn}`, async (req, res, next) => 
         where: {
           type: 'Group',
         },
-        include: {
-          members: true,
-        },
       });
       const ldapGrpInformels = grp_informels.map((grp_informel) => {
         return {
@@ -481,7 +485,6 @@ server.search(`ou=grp-informels,ou=groups,${rootDn}`, async (req, res, next) => 
             displayName: grp_informel.name,
             description: grp_informel.description,
             objectclass: ['top', 'groupOfNames', 'Group Informel'],
-            memberUid: grp_informel.members.map((member) => member.memberId),
           },
         };
       });
