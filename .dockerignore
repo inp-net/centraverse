@@ -1,0 +1,5 @@
+.github
+.husky
+.vscode
+k8s
+node_modules

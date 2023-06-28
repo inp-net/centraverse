@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: centraverse
+  namespace: centraverse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: centraverse
+  template:
+    metadata:
+      labels:
+        app: centraverse
+    spec:
+      containers:
+        - env:
+            - name: DATABASE_URL
+              value: postgresql://postgres:dev@centraverse-db-service:5432/postgres?schema=public
+            - name: PUBLIC_API_URL
+              value: https://centraverse.k8s.inpt.fr/graphql
+            - name: FRONTEND_ORIGIN
+              value: https://centraverse.k8s.inpt.fr
+            - name: PUBLIC_CAS_URL
+              value: https://cas.inpt.fr
+            - name: MAIL_HOST
+              value: galileo.bde.inp-toulouse.fr
+            - name: MAIL_PORT
+              value: '25'
+            - name: MAIL_NODEMAILER_SECURE
+              value: ''
+          image: harbor.k8s.inpt.fr/net7/centraverse:0.0.1
+          imagePullPolicy: Always
+          name: centraverse-app
+      volumes:
+        - name: centraverse-data
+          persistentVolumeClaim:
+            claimName: centraverse-data

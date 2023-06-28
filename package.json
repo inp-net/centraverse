@@ -38,7 +38,7 @@
     "postinstall": "husky install",
     "prisma": "yarn workspace @centraverse/api run prisma",
     "reset": "docker compose up -d && yarn prisma migrate reset --force",
-    "start": "docker compose up -d && yarn workspaces foreach -piv run start",
+    "start": "yarn workspaces foreach -piv run start",
     "storybook": "yarn workspace @centraverse/app run storybook"
   },
   "volta": {

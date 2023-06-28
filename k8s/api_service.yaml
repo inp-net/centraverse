@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: centraverse-api-service
+  namespace: centraverse
+spec:
+  selector:
+    app: centraverse
+  ports:
+    - name: http
+      port: 80
+      targetPort: 4000

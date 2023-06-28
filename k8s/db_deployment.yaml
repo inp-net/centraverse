@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: centraverse-sql
+  namespace: centraverse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: centraverse-db
+  template:
+    metadata:
+      labels:
+        app: centraverse-db
+    spec:
+      containers:
+        - name: centraverse-db
+          image: postgres:latest
+          imagePullPolicy: Always
+          env:
+            - name: POSTGRES_PASSWORD
+              value: dev
